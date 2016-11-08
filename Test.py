@@ -17,7 +17,7 @@ print docker_client.pull(repository="busybox", tag="latest")
 #         port_bindings={
 #             1111: 4567,
 #             2222: None
-#         }=
+#         }
 #     )
 # )
 # print container_id
