@@ -22,7 +22,7 @@ __email__ = "root@lightless.me"
 manager = Manager(web)
 
 # 添加命令
-manager.add_command("runserver", Server(host="127.0.0.1"))
+manager.add_command("runserver", Server(host="127.0.0.1",port = 1024))
 manager.add_command("db", MigrateCommand)
 
 

@@ -13,15 +13,14 @@ from Utils.CommonFunctions import generate_random_string
 from Web import db
 from Web import bcrypt
 
-__author__ = "lightless"
-__email__ = "root@lightless.me"
+
 
 
 class ZhulongUser(db.Model):
     """
     用户表模型
     """
-    __tablename__ = "zhulong_user"
+    __tablenam  e__ = "zhulong_user"
 
     id = db.Column(BIGINT(20, unsigned=True), primary_key=True, nullable=False, autoincrement=True)
     username = db.Column(db.String(32), nullable=False, unique=True)
