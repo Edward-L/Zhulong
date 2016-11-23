@@ -22,8 +22,8 @@ from Utils.CommonFunctions import generate_confirm_token
 from Utils.CommonFunctions import confirm_email_token
 from Utils.CommonFunctions import send_mail
 
-__author__ = "lightless"
-__email__ = "root@lightless.me"
+
+
 
 
 @web.route("/account/login", methods=["GET", "POST"])

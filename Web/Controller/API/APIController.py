@@ -14,8 +14,8 @@ from Web.models import ZhulongUserContainers
 from Utils.LoginRequire import login_required
 from Utils.CommonFunctions import generate_random_string
 
-__author__ = "lightless"
-__email__ = "root@lightless.me"
+
+
 
 
 @web.route("/api/v1/get_info", methods=['GET'])

@@ -8,8 +8,8 @@ from flask import g, session, render_template
 from Web import web
 from Web.models import ZhulongUser
 
-__author__ = "lightless"
-__email__ = "root@lightless.me"
+
+
 
 
 @web.before_request

@@ -19,8 +19,8 @@ from flask_triangle import Triangle
 from config import DevConfig
 from Utils.LoggerHelp import logger
 
-__author__ = "lightless"
-__email__ = "root@lightless.me"
+
+
 
 
 # 设置编码为UTF-8

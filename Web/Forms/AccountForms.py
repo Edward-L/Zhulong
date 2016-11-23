@@ -11,8 +11,8 @@ from wtforms import StringField, PasswordField
 from wtforms.validators import DataRequired, Length, Email
 from wtforms import ValidationError
 
-__author__ = "lightless"
-__email__ = "root@lightless.me"
+
+
 
 
 class RegisterForms(Form):

@@ -7,8 +7,8 @@ from flask import render_template
 
 from Web import web
 
-__author__ = "lightless"
-__email__ = "root@lightless.me"
+
+
 
 
 @web.route("/", methods=["GET"])

@@ -1,8 +1,8 @@
 # Version: 0.1
-# Author: lightless
+
 
 FROM centos:6
-MAINTAINER lightless "root@lightless.me"
+MAINTAINER edwardl "admin@edwardl.xyz"
 USER root
 
 # update source and software

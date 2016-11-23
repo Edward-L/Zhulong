@@ -1,8 +1,8 @@
 # Version: 0.2
-# Author: lightless
+# Author: edwardl
 
 FROM ubuntu:16.04
-MAINTAINER lightless "root@lightless.me"
+MAINTAINER edwardl "admin@edwardl.xyz"
 USER root
 
 # update source and software

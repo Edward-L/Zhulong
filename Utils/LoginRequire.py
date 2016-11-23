@@ -6,8 +6,8 @@
 from functools import wraps
 from flask import request, redirect, url_for, session
 
-__author__ = "lightless"
-__email__ = "root@lightless.me"
+
+
 
 
 def login_required(f):

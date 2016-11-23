@@ -8,8 +8,8 @@ from flask import g, render_template
 from Utils.LoginRequire import login_required
 from Web import web
 
-__author__ = "lightless"
-__email__ = "root@lightless.me"
+
+
 
 
 @web.route("/home/index")

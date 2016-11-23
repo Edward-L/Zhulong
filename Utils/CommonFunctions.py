@@ -12,8 +12,8 @@ from flask_mail import Message
 from Web import web
 from Web import mail
 
-__author__ = "lightless"
-__email__ = "root@lightless.me"
+
+
 
 CHAR_POOL = string.ascii_letters + string.digits
 

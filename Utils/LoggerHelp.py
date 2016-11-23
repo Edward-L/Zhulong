@@ -6,8 +6,8 @@
 import colorlog
 import logging
 
-__author__ = "lightless"
-__email__ = "root@lightless.me"
+
+
 
 __all__ = ['logger']
 

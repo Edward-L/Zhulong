@@ -5,8 +5,8 @@
 
 from Web import docker_client
 
-__author__ = "lightless"
-__email__ = "root@lightless.me"
+
+
 
 
 print docker_client.pull(repository="busybox", tag="latest")

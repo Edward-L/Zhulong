@@ -1,5 +1,5 @@
 /**
- * Created by lightless on 16-8-7.
+ * Created by edwardl on 16-8-7.
  */
 
 $(document).ready(function () {

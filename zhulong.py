@@ -10,8 +10,8 @@ from Web import web, db
 from Web.models import ZhulongUser, ZhulongUserContainers
 from Web.models import ZhulongSystemImages, ZhulongUserImages
 
-__author__ = "lightless"
-__email__ = "root@lightless.me"
+
+
 
 """
 实际上这个文件相当于manage.py
