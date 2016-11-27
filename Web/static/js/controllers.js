@@ -11,6 +11,50 @@ userHomeApp.controller("SidebarController", function ($scope, $log, $location) {
     $scope.activeSidebar = $location.$$path.split("/")[1];
 });
 
+
+userHomeApp.controller("showMyContainers", function ($scope, $http, $log, $window) {
+
+    // API版本，后续更新时，保持接口一致，只需更改这个就可以了
+    var API_VERSION = "v1";
+
+    // 获取生成表单用的信息
+    $http({
+        method: 'GET',
+        url: "/api/" + API_VERSION + "/get_containers"
+    }).success(function (response) {
+        if (response.code != 1001) {
+            $scope.errorMessage = response.message;
+            return false;
+        } else {
+            $scope.info = response.info;
+        }
+    }).error(function () {
+        $log.error("拉取信息失败！");
+        $scope.errorMessage = "Error when getting containers...";
+        return false;
+    });
+
+    //
+    $scope.opContainer = function (opstate) {
+        if(opstate=="start"){
+
+        }else{
+
+        }
+    };
+    //
+    $scope.delContainer = function (opstate) {
+        if(opstate=="start"){
+
+        }else{
+
+        }
+    };
+
+    
+});
+
+
 userHomeApp.controller("createNewDocker", function ($scope, $http, $log, $window) {
 
     // API版本，后续更新时，保持接口一致，只需更改这个就可以了

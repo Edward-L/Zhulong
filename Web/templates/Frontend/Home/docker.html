@@ -4,14 +4,39 @@
 {% block second_nav %}
   <ul class="nav nav-pills second-nav">
     <li class="nav-item">
-      <a ui-sref="docker" class="nav-link second-nav-active">My Dockers</a>
+      <a ui-sref="myDocker" class="nav-link second-nav-active">My Dockers</a>
     </li>
     <li class="nav-item">
-      <a ui-sref="addDocker" class="nav-link">Add Base Docker</a>
+      <a ui-sref="addDocker" class="nav-link ">Add Base Docker</a>
     </li>
   </ul>
 {% endblock %}
 
-<div class="main-content">
-
+<div class="main-content" ng-controller="showMyContainers">
+  <table id ="myContainers" class="table table-striped">
+  	<thead>
+  		<tr>
+  			<td>container name</td>
+  			<td>ssh user</td>
+  			<td>ssh port</td>
+  			<td>ssh password</td>
+  			<td>ports</td>
+  			<td>is running</td>
+  			<td>last run time</td>
+  			<td>last stop time</td>
+  			<td>operation</td>
+  		</tr>
+  	</thead>
+    <tr ng-repeat="k in info" >
+      <td>{{ k.container_name | angular }}</td>
+	  <td>{{ k.ssh_user | angular}}</td>
+	  <td>{{ k.ssh_port | angular}}</td>
+	  <td>{{ k.ssh_password | angular}}</td>
+	  <td  class="myContainerstd">{{ k.ports | angular}}</td>
+	  <td>{{ k.is_running | angular}}</td>
+	  <td>{{ k.last_run_time | angular}}</td>
+	  <td>{{ k.last_stop_time | angular}}</td>
+	  <td><button ng-click="opContainer(k.cid,k.opstate)">{{ k.opstate | angular}}</button><button ng-click="delContainer(k.cid)">delete</button></td>
+    </tr>
+  </table>
 </div>

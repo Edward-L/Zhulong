@@ -42,6 +42,33 @@ def api_get_info():
 
     return jsonify(info=op_images_info, code=1001, message="Successful")
 
+@web.route("/api/v1/get_containers", methods=['GET'])
+@login_required
+def api_get_containers():
+    # 获取该用户所有的contariners
+    results = ZhulongUserContainers.query.filter(ZhulongUserContainers.owner_id == g.current_user.id).all()
+    contariners_info = dict()
+
+    try:
+        for res in results:
+            # 整理数据
+            cid = "index" + str(res.id)
+            last_run_time = str(res.last_run_time) 
+            last_stop_time = str(res.last_stop_time)
+            if res.is_running:
+                opstate = "stop"
+                state = "running"
+            else:
+                opstate = "start"
+                state = "stoped"
+            postinfo = res.ports.replace(" ","").replace("{","").replace("}","").replace("\":","->").replace("\"","").replace(",","\n")
+
+            contariners_info[cid] = dict(cid=res.id,opstate=opstate, container_name=res.container_name, ssh_user=res.ssh_user, ssh_port=res.ssh_port, ssh_password=res.ssh_password,ports=postinfo, is_running=state, last_run_time=last_run_time, last_stop_time=last_stop_time)
+    except Exception as e:
+        return jsonify(code=1004, message=e.message)
+
+    return jsonify(info=contariners_info, code=1001, message="Successful")
+
 
 @web.route("/api/v1/create_docker", methods=["POST"])
 @login_required

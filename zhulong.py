@@ -22,7 +22,7 @@ from Web.models import ZhulongSystemImages, ZhulongUserImages
 manager = Manager(web)
 
 # 添加命令
-manager.add_command("runserver", Server(host="127.0.0.1",port = 1024))
+manager.add_command("runserver", Server(host="192.168.0.104"))
 manager.add_command("db", MigrateCommand)
 
 

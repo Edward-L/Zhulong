@@ -40,6 +40,22 @@ userHomeApp.config(function ($stateProvider, $urlRouterProvider) {
         }
     });
 
+    $stateProvider.state('myDocker', {
+        url: "/docker/my",
+        views: {
+            '': {
+                templateUrl: "/tpl/Frontend/Home/home_base.html"
+            },
+            'sidebar': {
+                templateUrl: "/tpl/Frontend/Home/sidebar.html",
+                controller: "SidebarController"
+            },
+            'main_window': {
+                templateUrl: "/tpl/Frontend/Home/docker.html"
+            }
+        }
+    });
+
     $stateProvider.state('addDocker', {
         url: "/docker/add",
         views: {
