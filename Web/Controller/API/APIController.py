@@ -52,7 +52,7 @@ def api_get_containers():
     try:
         for res in results:
             # 整理数据
-            cid = "index" + str(res.id)
+            cid = "container" + str(res.id)
             last_run_time = str(res.last_run_time) 
             last_stop_time = str(res.last_stop_time)
             if res.is_running:
@@ -63,7 +63,7 @@ def api_get_containers():
                 state = "stoped"
             postinfo = res.ports.replace(" ","").replace("{","").replace("}","").replace("\":","->").replace("\"","").replace(",","\n")
 
-            contariners_info[cid] = dict(cid=res.id,opstate=opstate, container_name=res.container_name, ssh_user=res.ssh_user, ssh_port=res.ssh_port, ssh_password=res.ssh_password,ports=postinfo, is_running=state, last_run_time=last_run_time, last_stop_time=last_stop_time)
+            contariners_info[cid] = dict(conid=res.container_id,opstate=opstate, container_name=res.container_name, ssh_user=res.ssh_user, ssh_port=res.ssh_port, ssh_password=res.ssh_password,ports=postinfo, is_running=state, last_run_time=last_run_time, last_stop_time=last_stop_time)
     except Exception as e:
         return jsonify(code=1004, message=e.message)
 
@@ -157,4 +157,76 @@ def api_create_docker():
         logger.error(e)
         return jsonify(code=1004, message="数据库执行失败，请稍后再试。")
     return jsonify(code=1001, message="container生成成功！")
+
+
+@web.route("/api/v1/start_container", methods=["POST"])
+@login_required
+def api_start_container():
+    print request.json
+    conid = request.json.get("conid", "")
+
+    # 检查container_id
+    container = ZhulongUserContainers.query.filter(ZhulongUserContainers.container_id == conid).first()
+    if not container:
+        return jsonify(code=1004, message="container选择有误")
+    logger.debug(container)
+
+    # 调用docker API start container
+    container = docker_client.start(container=conid)
+    
+    logger.debug(container)
+    # # 获取端口信息，改成json格式存入数据库
+    # # todo 多线程
+    # published_ports = dict()
+    # ssh_port = None
+    # for port in ports:
+    #     response = docker_client.port(conid, port)[0]
+    #     published_ports[port] = response.get("HostIp") + ":" + response.get("HostPort")
+    #     if port == 22:
+    #         ssh_port = response.get("HostPort")
+    #     print published_ports[port]
+    # published_ports = json.dumps(published_ports)
+
+    choose_container = ZhulongUserContainers.query.filter(ZhulongUserContainers.container_id == conid).first()
+    choose_container.is_running = True
+    choose_container.last_run_time = datetime.datetime.now()
+    # choose_container.ssh_port = ssh_port
+    # choose_container.ports = published_ports
+    # 插入到数据库中
+    try:
+        db.session.add(choose_container)
+        db.session.commit()
+    except Exception as e:
+        logger.error(e)
+        return jsonify(code=1004, message="数据库执行失败，请稍后再试。")
+    return jsonify(code=1001, message="start container生成成功！")
+
+@web.route("/api/v1/stop_container", methods=["POST"])
+@login_required
+def api_stop_container():
+    print request.json
+    conid = request.json.get("conid", "")
+
+    # 检查container_id
+    container = ZhulongUserContainers.query.filter(ZhulongUserContainers.container_id == conid).first()
+    if not container:
+        return jsonify(code=1004, message="container选择有误")
+    logger.debug(container)
+
+    # 调用docker API stop container
+    container = docker_client.stop(container=conid)
+    
+    logger.debug(container)
+
+    choose_container = ZhulongUserContainers.query.filter(ZhulongUserContainers.container_id == conid).first()
+    choose_container.is_running = False
+    choose_container.last_stop_time = datetime.datetime.now()
+    # 插入到数据库中
+    try:
+        db.session.add(choose_container)
+        db.session.commit()
+    except Exception as e:
+        logger.error(e)
+        return jsonify(code=1004, message="数据库执行失败，请稍后再试。")
+    return jsonify(code=1001, message="start container生成成功！")
 

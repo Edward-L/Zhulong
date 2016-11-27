@@ -35,11 +35,52 @@ userHomeApp.controller("showMyContainers", function ($scope, $http, $log, $windo
     });
 
     //
-    $scope.opContainer = function (opstate) {
+    $scope.opContainer = function (conid,opstate) {
         if(opstate=="start"){
+            var payload = {
+                "conid": conid
+            };
+            var csrfToken = $window.document.getElementsByName("csrf-token")[0].content;
+            $http({
+                method: "POST",
+                url: "/api/" + API_VERSION + "/start_container",
+                data: payload,
+                headers: {"X-CSRFToken": csrfToken}
+            }).success(function (data) {
+                if (data.code != 1001) {
+                    $scope.errorMessage = data.message;
+                } else {
+                    $scope.alertTag = 'success';
+                    $window.location.reload();
+                    $scope.errorMessage = data.message;
+                }
+            }).error(function () {
+                $scope.errorMessage = "start container failed.";
+                return false;
+            });
 
         }else{
-
+            var payload = {
+                "conid": conid
+            };
+            var csrfToken = $window.document.getElementsByName("csrf-token")[0].content;
+            $http({
+                method: "POST",
+                url: "/api/" + API_VERSION + "/stop_container",
+                data: payload,
+                headers: {"X-CSRFToken": csrfToken}
+            }).success(function (data) {
+                if (data.code != 1001) {
+                    $scope.errorMessage = data.message;
+                } else {
+                    $scope.alertTag = 'success';
+                    $window.location.reload();
+                    $scope.errorMessage = data.message;
+                }
+            }).error(function () {
+                $scope.errorMessage = "stop container failed.";
+                return false;
+            });
         }
     };
     //
