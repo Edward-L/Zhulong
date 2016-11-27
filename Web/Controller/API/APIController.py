@@ -166,32 +166,36 @@ def api_start_container():
     conid = request.json.get("conid", "")
 
     # 检查container_id
-    container = ZhulongUserContainers.query.filter(ZhulongUserContainers.container_id == conid).first()
-    if not container:
+    choose_container = ZhulongUserContainers.query.filter(ZhulongUserContainers.container_id == conid).first()
+    if not choose_container:
         return jsonify(code=1004, message="container选择有误")
-    logger.debug(container)
+    logger.debug(choose_container)
 
     # 调用docker API start container
     container = docker_client.start(container=conid)
     
     logger.debug(container)
-    # # 获取端口信息，改成json格式存入数据库
-    # # todo 多线程
-    # published_ports = dict()
-    # ssh_port = None
-    # for port in ports:
-    #     response = docker_client.port(conid, port)[0]
-    #     published_ports[port] = response.get("HostIp") + ":" + response.get("HostPort")
-    #     if port == 22:
-    #         ssh_port = response.get("HostPort")
-    #     print published_ports[port]
-    # published_ports = json.dumps(published_ports)
+    # 获取端口信息，改成json格式存入数据库
+    # todo 多线程
+    tmp = choose_container.ports
+    tmp = json.loads(tmp)
+    ports = []
+    for i in tmp:
+        ports.append(i)
+    published_ports = dict()
+    ssh_port = None
+    for port in ports:
+        response = docker_client.port(conid, port)[0]
+        published_ports[port] = response.get("HostIp") + ":" + response.get("HostPort")
+        if port == "22":
+            ssh_port = int(response.get("HostPort"))
+        print published_ports[port]
+    published_ports = json.dumps(published_ports)
 
-    choose_container = ZhulongUserContainers.query.filter(ZhulongUserContainers.container_id == conid).first()
     choose_container.is_running = True
     choose_container.last_run_time = datetime.datetime.now()
-    # choose_container.ssh_port = ssh_port
-    # choose_container.ports = published_ports
+    choose_container.ssh_port = ssh_port
+    choose_container.ports = published_ports
     # 插入到数据库中
     try:
         db.session.add(choose_container)
