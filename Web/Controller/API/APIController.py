@@ -244,7 +244,7 @@ def api_del_container():
     # 检查container_id
     container = ZhulongUserContainers.query.filter(ZhulongUserContainers.container_id == conid).first()
     if container.is_running:
-        return jsonify(code=1004, message="container is runnning!!")
+        return jsonify(code=1004, message="container is runnning~ stop it first !!")
     logger.debug(container)
 
     # 调用docker API stop container

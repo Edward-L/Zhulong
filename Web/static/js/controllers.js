@@ -24,6 +24,7 @@ userHomeApp.controller("showMyContainers", function ($scope, $http, $log, $windo
     }).success(function (response) {
         if (response.code != 1001) {
             $scope.errorMessage = response.message;
+            alert($scope.errorMessage);
             return false;
         } else {
             $scope.info = response.info;
@@ -31,6 +32,7 @@ userHomeApp.controller("showMyContainers", function ($scope, $http, $log, $windo
     }).error(function () {
         $log.error("拉取信息失败！");
         $scope.errorMessage = "Error when getting containers...";
+        alert($scope.errorMessage);
         return false;
     });
 
@@ -49,13 +51,15 @@ userHomeApp.controller("showMyContainers", function ($scope, $http, $log, $windo
             }).success(function (data) {
                 if (data.code != 1001) {
                     $scope.errorMessage = data.message;
+                    alert($scope.errorMessage);
                 } else {
                     $scope.alertTag = 'success';
+                    $scope.errorMessage = data.message;                    
                     $window.location.reload();
-                    $scope.errorMessage = data.message;
                 }
             }).error(function () {
                 $scope.errorMessage = "start container failed.";
+                alert($scope.errorMessage);
                 return false;
             });
 
@@ -72,40 +76,46 @@ userHomeApp.controller("showMyContainers", function ($scope, $http, $log, $windo
             }).success(function (data) {
                 if (data.code != 1001) {
                     $scope.errorMessage = data.message;
+                    alert($scope.errorMessage);
                 } else {
                     $scope.alertTag = 'success';
-                    $window.location.reload();
                     $scope.errorMessage = data.message;
+                    $window.location.reload();
                 }
             }).error(function () {
                 $scope.errorMessage = "stop container failed.";
+                alert($scope.errorMessage);
                 return false;
             });
         }
     };
     //
     $scope.delContainer = function (conid) {
-        var payload = {
-            "conid": conid
-        };
-        var csrfToken = $window.document.getElementsByName("csrf-token")[0].content;
-        $http({
-            method: "POST",
-            url: "/api/" + API_VERSION + "/del_container",
-            data: payload,
-            headers: {"X-CSRFToken": csrfToken}
-        }).success(function (data) {
-            if (data.code != 1001) {
-                $scope.errorMessage = data.message;
-            } else {
-                $scope.alertTag = 'success';
-                $window.location.reload();
-                $scope.errorMessage = data.message;
-            }
-        }).error(function () {
-            $scope.errorMessage = "del container failed.";
-            return false;
-        });
+        if(confirm("Are you sure you want to delete it?")){
+            var payload = {
+                "conid": conid
+            };
+            var csrfToken = $window.document.getElementsByName("csrf-token")[0].content;
+            $http({
+                method: "POST",
+                url: "/api/" + API_VERSION + "/del_container",
+                data: payload,
+                headers: {"X-CSRFToken": csrfToken}
+            }).success(function (data) {
+                if (data.code != 1001) {
+                    $scope.errorMessage = data.message;
+                    alert($scope.errorMessage);
+                } else {
+                    $scope.alertTag = 'success';
+                    $scope.errorMessage = data.message;
+                    $window.location.reload();
+                }
+            }).error(function () {
+                $scope.errorMessage = "del container failed.";
+                alert($scope.errorMessage);
+                return false;
+            });
+        }
     };
 
     
@@ -131,6 +141,7 @@ userHomeApp.controller("createNewDocker", function ($scope, $http, $log, $window
     }).success(function (response) {
         if (response.code != 1001) {
             $scope.errorMessage = response.message;
+            alert($scope.errorMessage);
             return false;
         } else {
             $scope.info = response.info;
@@ -138,6 +149,7 @@ userHomeApp.controller("createNewDocker", function ($scope, $http, $log, $window
     }).error(function () {
         $log.error("拉取操作系统版本信息失败！");
         $scope.errorMessage = "Error when getting op system...";
+        alert($scope.errorMessage);
         return false;
     });
 
@@ -174,12 +186,17 @@ userHomeApp.controller("createNewDocker", function ($scope, $http, $log, $window
         }).success(function (data) {
             if (data.code != 1001) {
                 $scope.errorMessage = data.message;
+                alert($scope.errorMessage);
             } else {
                 $scope.alertTag = 'success';
                 $scope.errorMessage = data.message;
+                alert($scope.errorMessage);
+                $window.location.reload();
+
             }
         }).error(function () {
             $scope.errorMessage = "Create a docker failed.";
+            alert($scope.errorMessage);
             return false;
         });
 
