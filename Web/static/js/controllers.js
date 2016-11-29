@@ -84,12 +84,28 @@ userHomeApp.controller("showMyContainers", function ($scope, $http, $log, $windo
         }
     };
     //
-    $scope.delContainer = function (opstate) {
-        if(opstate=="start"){
-
-        }else{
-
-        }
+    $scope.delContainer = function (conid) {
+        var payload = {
+            "conid": conid
+        };
+        var csrfToken = $window.document.getElementsByName("csrf-token")[0].content;
+        $http({
+            method: "POST",
+            url: "/api/" + API_VERSION + "/del_container",
+            data: payload,
+            headers: {"X-CSRFToken": csrfToken}
+        }).success(function (data) {
+            if (data.code != 1001) {
+                $scope.errorMessage = data.message;
+            } else {
+                $scope.alertTag = 'success';
+                $window.location.reload();
+                $scope.errorMessage = data.message;
+            }
+        }).error(function () {
+            $scope.errorMessage = "del container failed.";
+            return false;
+        });
     };
 
     

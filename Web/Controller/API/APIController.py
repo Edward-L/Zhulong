@@ -203,7 +203,7 @@ def api_start_container():
     except Exception as e:
         logger.error(e)
         return jsonify(code=1004, message="数据库执行失败，请稍后再试。")
-    return jsonify(code=1001, message="start container生成成功！")
+    return jsonify(code=1001, message="start container 成功！")
 
 @web.route("/api/v1/stop_container", methods=["POST"])
 @login_required
@@ -232,5 +232,37 @@ def api_stop_container():
     except Exception as e:
         logger.error(e)
         return jsonify(code=1004, message="数据库执行失败，请稍后再试。")
-    return jsonify(code=1001, message="start container生成成功！")
+    return jsonify(code=1001, message="start container 成功！")
+
+
+@web.route("/api/v1/del_container", methods=["POST"])
+@login_required
+def api_del_container():
+    print request.json
+    conid = request.json.get("conid", "")
+
+    # 检查container_id
+    container = ZhulongUserContainers.query.filter(ZhulongUserContainers.container_id == conid).first()
+    if container.is_running:
+        return jsonify(code=1004, message="container is runnning!!")
+    logger.debug(container)
+
+    # 调用docker API stop container
+    container = docker_client.remove_container(container=conid)
+    
+    logger.debug(container)
+
+    choose_container = ZhulongUserContainers.query.filter(ZhulongUserContainers.container_id == conid).first()
+
+    # 插入到数据库中
+    try:
+        db.session.delete(choose_container)
+        db.session.commit()
+    except Exception as e:
+        logger.error(e)
+        return jsonify(code=1004, message="数据库执行失败，请稍后再试。")
+    return jsonify(code=1001, message="delete container 成功！")
+
+
+
 
