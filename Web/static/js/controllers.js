@@ -168,9 +168,6 @@ userHomeApp.controller("createNewDocker", function ($scope, $http, $log, $window
     // 创建镜像
     $scope.funcCreateDocker = function () {
 
-        // 禁用按钮
-        $scope.createDockerBtn = true;
-
         // 整理数据
         var payload = {
             "version_id": $scope.ver_id,

@@ -18,9 +18,9 @@ userHomeApp.config(function ($stateProvider, $urlRouterProvider) {
                 templateUrl: "/tpl/Frontend/Home/sidebar.html",
                 controller: "SidebarController"
             },
-            // 'main_window': {
-            //     templateUrl: "/tpl/Frontend/Home/docker.html"
-            // }
+            'main_window': {
+                 templateUrl: "/tpl/Frontend/Home/docker.html"
+            }
         }
     });
 

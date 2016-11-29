@@ -36,7 +36,9 @@
 	  <td>{{ k.is_running | angular}}</td>
 	  <td>{{ k.last_run_time | angular}}</td>
 	  <td>{{ k.last_stop_time | angular}}</td>
-	  <td><button ng-click="opContainer(k.conid,k.opstate)">{{ k.opstate | angular}}</button><button ng-click="delContainer(k.conid)">delete</button></td>
+	  <td>
+	  <button ng-click="opContainer(k.conid,k.opstate)" class="btn {{k.butCol | angular}} btn-sm">{{ k.opstate | angular}}</button>
+	  <button ng-click="delContainer(k.conid)" class="btn btn-danger btn-sm">delete</button></td>
     </tr>
   </table>
 </div>

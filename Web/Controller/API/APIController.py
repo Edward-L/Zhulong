@@ -58,12 +58,14 @@ def api_get_containers():
             if res.is_running:
                 opstate = "stop"
                 state = "running"
+                butCol = "btn-primary"
             else:
                 opstate = "start"
                 state = "stoped"
+                butCol = "btn-success"
             postinfo = res.ports.replace(" ","").replace("{","").replace("}","").replace("\":","->").replace("\"","").replace(",","\n")
 
-            contariners_info[cid] = dict(conid=res.container_id,opstate=opstate, container_name=res.container_name, ssh_user=res.ssh_user, ssh_port=res.ssh_port, ssh_password=res.ssh_password,ports=postinfo, is_running=state, last_run_time=last_run_time, last_stop_time=last_stop_time)
+            contariners_info[cid] = dict(butCol = butCol, conid=res.container_id,opstate=opstate, container_name=res.container_name, ssh_user=res.ssh_user, ssh_port=res.ssh_port, ssh_password=res.ssh_password,ports=postinfo, is_running=state, last_run_time=last_run_time, last_stop_time=last_stop_time)
     except Exception as e:
         return jsonify(code=1004, message=e.message)
 
