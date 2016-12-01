@@ -100,6 +100,10 @@ def api_create_docker():
     # 整理port
     try:
         ports = [int(p.strip()) for p in exposed_port.split(",")]
+        for port in system_image.expose_port.split(","):
+            logger.debug(ports)
+            if port not in ports:
+                ports.append(int(port))
     except ValueError:
         return jsonify(code=1004, message="端口填写有误")
     logger.debug(ports)
