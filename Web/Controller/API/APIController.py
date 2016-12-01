@@ -30,13 +30,13 @@ def api_get_info():
         for res in results:
             op_images_info[res.op_name] = list()
 
-            # 获取对应系统镜像的版本和ID信息
-            versions = ZhulongSystemImages.query.filter(
+            # 获取对应系统镜像的服务和ID信息
+            servers = ZhulongSystemImages.query.filter(
                 ZhulongSystemImages.op_name == res.op_name
-            ).group_by(ZhulongSystemImages.version).all()
+            ).group_by(ZhulongSystemImages.server).all()
 
             # 整理数据
-            op_images_info[res.op_name] = [dict(value=ver.id, version=ver.version) for ver in versions]
+            op_images_info[res.op_name] = [dict(value=ser.id, server=ser.server) for ser in servers]
     except Exception as e:
         return jsonify(code=1004, message=e.message)
 
@@ -77,14 +77,14 @@ def api_get_containers():
 def api_create_docker():
     print request.json
     exposed_port = request.json.get("port", "")
-    version_id = request.json.get("version_id", "")
+    server_id = request.json.get("server_id", "")
     container_name = request.json.get("container_name", "")
 
-    if version_id == "":
-        return jsonify(code=1004, message="系统版本选择有误")
+    if server_id == "":
+        return jsonify(code=1004, message="服务版本选择有误")
 
-    # 检查version_id
-    system_image = ZhulongSystemImages.query.filter(ZhulongSystemImages.id == version_id).first()
+    # 检查server_id
+    system_image = ZhulongSystemImages.query.filter(ZhulongSystemImages.id == server_id).first()
     if not system_image:
         return jsonify(code=1004, message="系统版本选择有误")
     logger.debug(system_image)
@@ -146,9 +146,9 @@ def api_create_docker():
 
     # 插入到数据库中
     user_container = ZhulongUserContainers(
-        owner_id=g.current_user.id, image_id=system_image.id, image_type=1,
+        owner_id=g.current_user.id, image_id=system_image.id, 
         container_name=container_name, container_id=container.get("Id"), ssh_user="root",
-        ssh_port=ssh_port, ssh_password=new_password, url=None,
+        ssh_port=ssh_port, ssh_password=new_password, 
         ports=published_ports, is_running=True,
         last_run_time=datetime.datetime.now(), last_stop_time=None
     )

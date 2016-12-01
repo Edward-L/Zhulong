@@ -127,8 +127,8 @@ userHomeApp.controller("createNewDocker", function ($scope, $http, $log, $window
     // API版本，后续更新时，保持接口一致，只需更改这个就可以了
     var API_VERSION = "v1";
 
-    // 系统镜像版本信息
-    $scope.versions = [{"version": "None"}];
+    // 系统镜像服务信息
+    $scope.servers = [{"server": "None"}];
     $scope.ver_id = null;
     $scope.port = null;
     $scope.containerName = null;
@@ -156,13 +156,13 @@ userHomeApp.controller("createNewDocker", function ($scope, $http, $log, $window
     // 选择系统镜像
     $scope.funcSystemImage = function (imageName) {
         $scope.imageName = imageName;
-        $scope.versions = $scope.info[imageName];
-        // $log.debug($scope.versions);
+        $scope.servers = $scope.info[imageName];
+        // $log.debug($scope.servers);
     };
 
-    // 选择镜像版本
-    $scope.funcImageVersion = function (ver_id) {
-        $scope.ver_id = ver_id;
+    // 选择服务版本
+    $scope.funcImageServer = function (ser_id) {
+        $scope.ser_id = ser_id;
     };
 
     // 创建镜像
@@ -170,7 +170,7 @@ userHomeApp.controller("createNewDocker", function ($scope, $http, $log, $window
 
         // 整理数据
         var payload = {
-            "version_id": $scope.ver_id,
+            "server_id": $scope.ser_id,
             "port": $scope.port,
             "container_name": $scope.containerName
         };

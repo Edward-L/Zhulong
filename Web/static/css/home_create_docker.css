@@ -61,6 +61,6 @@
     background: #0275d8;
 }
 
-.base-op-system, .base-system-version, .base-open-port, .base-container-name {
+.base-op-system, .base-system-server, .base-open-port, .base-container-name {
     margin-left: 50px;
 }

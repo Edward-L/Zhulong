@@ -8,7 +8,7 @@ from flask_migrate import MigrateCommand
 
 from Web import web, db
 from Web.models import ZhulongUser, ZhulongUserContainers
-from Web.models import ZhulongSystemImages, ZhulongUserImages
+from Web.models import ZhulongSystemImages
 
 
 
@@ -30,7 +30,7 @@ manager.add_command("db", MigrateCommand)
 def make_shell_context():
     return dict(
         web=web, db=db, ZhulongUser=ZhulongUser, ZhulongUserContainers=ZhulongUserContainers,
-        ZhulongSystemImages=ZhulongSystemImages, ZhulongUserImages=ZhulongUserImages
+        ZhulongSystemImages=ZhulongSystemImages
     )
 
 

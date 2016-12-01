@@ -21,13 +21,12 @@
     </div>
   </div>
   <div class="step-title">
-    <span class="step-number">2</span>System Version
+    <span class="step-number">2</span>Server
   </div>
-  {{ versions.version | angular }}
-  <div class="base-system-version">
-    <div ng-repeat="ver in versions" class="op-system-cell" ng-click="funcImageVersion(ver.value)"
-         ng-class="{'op-system-cell-active': ver_id == ver.value}">
-      {{ ver.version | angular }}
+  <div class="base-system-server">
+    <div ng-repeat="ser in servers" class="op-system-cell" ng-click="funcImageServer(ser.value)"
+         ng-class="{'op-system-cell-active': ser_id == ser.value}">
+        {{ ser.server | angular }}
     </div>
   </div>
   <div class="step-title">
