@@ -116,15 +116,25 @@ def api_create_docker():
     image_name = system_image.image_name
     container = docker_client.create_container(
         image=image_name,
+        command=["/usr/sbin/sshd","-D"],
         ports=ports,
         name=container_name,
         host_config=docker_client.create_host_config(
             publish_all_ports=True
         )
     )
+    logger.debug("container:")
     logger.debug(container)
-    docker_client.start(container.get("Id"))
+    logger.debug("iamge_name:")
+    logger.debug(image_name)
+    logger.debug("ports:")
+    logger.debug(ports)
+    logger.debug("container_name:")
+    logger.debug(container_name)
 
+    a = docker_client.start(container.get("Id"))
+    logger.debug("start:")
+    logger.debug(a)
     # 生成随机密码
     new_password = generate_random_string(12)
     # 改密码
@@ -132,7 +142,8 @@ def api_create_docker():
         container.get("Id"),
         'bash -c "echo root:{0} | chpasswd"'.format(new_password)
     )
-    logger.debug(exec_id)
+    logger.debug("container.get id :")
+    logger.debug(container.get("Id"))
     docker_client.exec_start(exec_id.get("Id"))
     logger.info("exec done.")
 
@@ -141,7 +152,10 @@ def api_create_docker():
     published_ports = dict()
     ssh_port = None
     for port in ports:
+        logger.info("exec done1.")
+        logger.info(port)
         response = docker_client.port(container.get("Id"), port)[0]
+        logger.info("exec done2.")
         published_ports[port] = response.get("HostIp") + ":" + response.get("HostPort")
         if port == 22:
             ssh_port = response.get("HostPort")
